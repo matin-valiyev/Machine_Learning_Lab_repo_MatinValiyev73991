@@ -1,0 +1,15 @@
+Validation Report & Quality Audit
+Dataset: UCI Adult Income (fetch_openml, version 2)
+
+1. Automated Schema & Range Checks:
+- Age violations (<17 or >90): 0
+- Hours violations (<1 or >99): 0
+- Capital-gain violations (<0 or >99999): 0
+- Capital-loss violations (<0 or >4356): 0
+- Missing values ('?'): 0
+
+2. Label-Quality Audit:
+- Duplicate rows with conflicting income labels: 0
+
+3. Manual Spot-Check:
+- A manual review of 50 random rows was conducted against the data dictionary. No impossible values, schema mismatches, or logical inconsistencies were found in the sampled data.

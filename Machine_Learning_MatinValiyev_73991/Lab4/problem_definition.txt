@@ -1,0 +1,13 @@
+Problem Definition: UCI Adult Income Prediction
+
+Goal: The objective of this machine learning system is to predict whether an individual's annual income exceeds $50,00K based on census demographic data.
+
+Inputs: The model utilizes 14 distinct features derived from the 1994 Census database, encompassing a mix of categorical inputs (e.g., workclass, education, marital-status, occupation) and numerical inputs (e.g., age, hours-per-week, capital-gain, capital-loss).
+
+Output: The target variable is a binary classification label indicating income bracket: '<=50K' or '>50K'.
+
+Success Metric: Model performance will be evaluated primarily using the F1 score to account for class imbalances, supplemented by overall Accuracy. 
+
+Constraints: 
+1. The data pipeline must be entirely leakage-free, necessitating a strict 70/30 stratified train/test split prior to any imputation or scaling. 
+2. The entire pipeline, from ingestion to evaluation, must be reproducible via a single command script.
