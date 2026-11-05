@@ -1,0 +1,16 @@
+Lab 5 Short Note: Eager vs. Traced Execution and Contiguity
+
+1. Eager vs Compiled/Traced Execution
+In my benchmark, Eager execution took 0.2411 seconds and Traced execution took 0.2472 seconds. 
+Because this is a very simple model, tracing did not provide a speed advantage. 
+Compilation and tracing help the most when deployed on large, complex models running many times. 
+It helps because PyTorch reads the entire graph ahead of time, optimizes the math pathways,
+and removes the slow Python overhead before execution.
+
+
+2. Tensor Contiguity
+When checking contiguity, my normal tensor was contiguous (True), and the flipped tensor was non-contiguous (False).
+My contiguous tensor summed in 0.0199 seconds, while the non-contiguous one summed in 0.0139 seconds. 
+While my specific run showed a tiny variance likely due to memory caching,
+contiguous tensors are theoretically faster for operations because the data is stored in a single, 
+unbroken block in the computer's physical memory, allowing the processor to read it without jumping around.
