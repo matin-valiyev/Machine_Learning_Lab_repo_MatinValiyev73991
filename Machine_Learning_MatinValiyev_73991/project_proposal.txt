@@ -1,0 +1,20 @@
+MACHINE LEARNING INDIVIDUAL PROJECT PROPOSAL
+
+Student Name: Matin Valiyev
+Student ID: 73991
+
+1. Problem: 
+Developing a fast, lightweight image classification model for real-time mobile retail inventory. Store employees need to scan and classify clothing items instantly using older mobile devices, requiring the AI to run locally without cloud processing.
+
+2. Dataset: 
+FashionMNIST (60,000 grayscale images of 10 clothing categories). It is lightweight enough for rapid experimentation while closely mimicking the retail classification problem.
+
+3. Success Metric: 
+Achieve an accuracy of > 85% on the test set while strictly maintaining the deployment hardware constraints.
+
+4. Deployment Constraints: 
+- Latency: <= 50 ms per prediction to ensure the mobile app feels instant to the user.
+- Model Size: <= 5 MB total storage footprint to ensure it easily downloads over cellular data.
+
+5. Planned Optimization: 
+Post-training Quantization (converting weights from 32-bit floats to 8-bit integers). This will drastically shrink the model size to easily fit the 5 MB limit and speed up the CPU inference to meet the 50 ms latency constraint, with minimal penalty to the final accuracy.

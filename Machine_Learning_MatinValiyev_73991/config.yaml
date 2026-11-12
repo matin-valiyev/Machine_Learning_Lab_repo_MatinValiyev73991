@@ -1,0 +1,5 @@
+seed: 42
+batch_size: 64
+epochs: 2
+learning_rate: 0.01
+dataset: "FashionMNIST"
