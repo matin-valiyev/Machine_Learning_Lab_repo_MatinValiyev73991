@@ -1,0 +1,36 @@
+Lab 8: Quantization and Export Report
+
+--- Task 1: Manual Tensor Quantization (features.0.weight) ---
+Bit-Width | Per-Tensor MSE | Per-Channel MSE | Improvement
+8-bit     | 0.00000165     | 0.00000063      | 61.8% lower error
+4-bit     | 0.00054311     | 0.00023817      | 56.1% lower error
+2-bit     | 0.03023909     | 0.01158620      | 61.7% lower error
+
+Analysis: Lowering bit-width increases quantization error (MSE) exponentially. Per-channel scaling consistently reduces MSE by ~56-62% compared to per-tensor scaling because each filter gets its own scale factor instead of sharing one across all channels.
+
+--- Task 2 & 3: Dynamic & Static Quantization ---
+Quantization Backend Used: onednn (Intel/AMD CPU on Windows)
+Why Calibration Data Must Represent Real Data:
+Static quantization sets fixed activation scales and zero-points by observing the min/max values produced during calibration (500 random training images). If the calibration subset does not represent real-world data, the recorded ranges will be too narrow or shifted, causing real inputs to clip or round poorly and severely hurting accuracy. (Note: onednn without CPU VNNI support also contributed to the static quantization accuracy drop to 72.29%.)
+
+--- Task 4: ONNX Export & Validation ---
+Max absolute difference (PyTorch vs ONNX Runtime): 0.00000095 (Matches within 1e-4: True)
+PyTorch CPU Latency:      0.80 ms
+ONNX Runtime CPU Latency: 0.30 ms (2.63x speedup)
+
+--- Task 5: Model-Variant Comparison ---
+Variant          | Accuracy | Size (MB) | Latency (ms)
+-------------------------------------------------------
+Baseline         |  91.83%  |   3.88 MB |   0.79 ms
+Pruned (90%)     |  90.09%  |   3.88 MB |   0.77 ms
+Distilled        |  89.95%  |   0.41 MB |   0.34 ms
+Dynamic Quant    |  91.79%  |   1.19 MB |   1.19 ms
+Static Quant     |  72.29%  |   0.98 MB |   1.29 ms
+Pruned+Quant     |  90.09%  |   1.19 MB |   1.19 ms
+Distilled+Quant  |  89.96%  |   0.12 MB |   1.54 ms
+
+Deployment Recommendations:
+- Cloud: Baseline (FP32) exported to ONNX Runtime. Cloud servers have plenty of memory and power, so we prioritize maximum accuracy (91.83%) and fast ONNX Runtime throughput (0.30 ms).
+- Edge (e.g., Raspberry Pi / Jetson): Distilled Student (0.41 MB, 0.34 ms) or Dynamic Quantized Baseline (1.19 MB, 91.79%). Best balance of high accuracy, small footprint, and fast CPU inference.
+- Mobile (iOS / Android): Distilled + Quantized Student (0.12 MB, 89.96%). Mobile apps need tiny download sizes and low battery drain while keeping ~90% accuracy.
+- TinyML (Microcontrollers): Distilled + Static INT8 Quantized Student. Microcontrollers only have kilobytes of RAM and no floating-point unit, so only the smallest integer-only model can fit and run.
