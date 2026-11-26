@@ -1,0 +1,15 @@
+Lab 7 Task 5: Efficiency Pillars Summary
+
+MODEL              | DATA                           | MODEL SIZE                   | COMPUTE (Latency) | ENERGY
+-----------------------------------------------------------------------------------------------------------------
+Baseline CNN       | Fashion-MNIST labels           | ~1.01M params (3.88 MB)      | ~0.86 ms          | High
+Pruned CNN (90%)   | Fashion-MNIST labels           | ~1.01M params (3.70 MB zip)  | ~1.46 ms          | High
+Plain Student      | Fashion-MNIST labels           | ~105k params (~0.4 MB)       | Fast (~0.2 ms)    | Low
+Distilled Student  | Fashion-MNIST + Teacher Logits | ~105k params (~0.4 MB)       | Fast (~0.2 ms)    | Low
+
+Conclusion:
+Unstructured magnitude pruning successfully reduced the theoretical storage size of the baseline model when compressed,
+but it negatively impacted compute latency on a standard CPU because dense kernels still process the zeroed weights.
+Knowledge distillation proved to be the most effective optimization technique.
+By transferring the teacher model's soft probabilities to the student, 
+the distilled model achieved near-baseline accuracy while reducing the model size by roughly 90% and significantly improving compute latency and energy efficiency.
